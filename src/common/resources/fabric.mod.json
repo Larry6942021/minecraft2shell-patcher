@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "minecraft2shell-patcher",
+  "version": "${version}",
+  "name": "Minecraft2shell Patcher",
+  "description": "Blocks the Minecraft2Shell font RCE by turning off TrueType hinting, and shows a toast when a server resource pack loads a TrueType font.",
+  "authors": [
+    "Larry6"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/minecraft2shell-fix"
+  },
+  "license": "MIT",
+  "icon": "assets/minecraft2shell-patcher/icon.png",
+  "environment": "client",
+  "depends": {
+    "fabricloader": ">=0.15.10",
+    "minecraft": "${minecraft}",
+    "java": ">=${java}"
+  },
+  "mixins": [
+    {
+      "config": "minecraft2shell-patcher.mixins.json",
+      "environment": "client"
+    },
+    {
+      "config": "minecraft2shell-patcher-toast.mixins.json",
+      "environment": "client"
+    }
+  ]
+}

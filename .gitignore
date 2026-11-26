@@ -1,0 +1,11 @@
+.gradle/
+.idea/
+*.iml
+run/
+__pycache__/
+test/*.ttf
+
+# Ignore build output, but keep the collected release jars.
+build/*
+!build/libs
+versions/*/build/

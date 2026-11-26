@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.larry6.patcher.mixin",
+  "compatibilityLevel": "JAVA_${java}",
+  "client": [
+    "TrueTypeGlyphProviderDefinitionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

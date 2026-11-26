@@ -1,0 +1,65 @@
+plugins {
+  id 'net.fabricmc.fabric-loom' version "${loom_version}" apply false
+  id 'net.fabricmc.fabric-loom-remap' version "${loom_version}" apply false
+}
+
+// Per-version jars: the FreeType fix, the font-load hook and the toast.
+project(':versions').subprojects {
+  def mc = project.name
+  def toast = project.property('toast')
+  // 26.x ships without obfuscation, so it needs no mappings and runs on Java 25.
+  def unobfuscated = mc.startsWith('26.')
+  def javaVersion = unobfuscated ? 25 : 21
+
+  apply plugin: unobfuscated ? 'net.fabricmc.fabric-loom' : 'net.fabricmc.fabric-loom-remap'
+
+  version = "${rootProject.mod_version}+${mc}"
+  group = rootProject.maven_group
+  base.archivesName = rootProject.archives_base_name
+
+  dependencies {
+    minecraft "com.mojang:minecraft:${mc}"
+    if (unobfuscated) {
+      implementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+    } else {
+      mappings loom.officialMojangMappings()
+      modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+    }
+  }
+
+  sourceSets.main {
+    java.srcDirs = [
+      rootProject.file('src/fix/java'),
+      rootProject.file('src/common/java'),
+      rootProject.file("src/toast_${toast}/java"),
+    ]
+    resources.srcDirs = [rootProject.file('src/fix/resources'), rootProject.file('src/common/resources')]
+  }
+
+  processResources {
+    def props = [version: rootProject.mod_version, minecraft: mc, java: javaVersion]
+    inputs.properties(props)
+    filesMatching(['fabric.mod.json', '*.mixins.json']) { expand(props) }
+  }
+
+  java {
+    sourceCompatibility = JavaVersion.toVersion(javaVersion)
+    targetCompatibility = JavaVersion.toVersion(javaVersion)
+  }
+
+  tasks.withType(JavaCompile).configureEach {
+    options.release = javaVersion
+    options.encoding = 'UTF-8'
+  }
+}
+
+// Puts the current release jars in build/libs, and nothing else, so they can be uploaded together.
+tasks.register('collectJars', Sync) {
+  project(':versions').subprojects.each { p ->
+    dependsOn("${p.path}:build")
+    from(p.layout.buildDirectory.dir('libs')) {
+      exclude '*-sources.jar'
+    }
+  }
+  into layout.buildDirectory.dir('libs')
+}
