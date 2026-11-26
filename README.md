@@ -46,11 +46,11 @@ When a TrueType font from a server resource pack loads, the mod shows a toast wi
 
 ## Installation
 
-1. Download the jar for your Minecraft version from the Releases page.
+1. Download the jar for your Minecraft version from the Releases page: `1.21-1.21.11` for any 1.21.x version, or `26.1-26.2` for 26.1 to 26.2.
 2. Put it in your `mods` folder.
 3. Start the game. No setup is necessary.
 
-Jars are built for 1.21 to 1.21.11 and 26.1 to 26.2. On 26.3, use Mojang's fix above. Players on 1.20.5 or 1.20.6 should update to 1.21 or later.
+Each jar carries the toast for every version it supports and picks the right one at launch. On 26.3, use Mojang's fix above. Players on 1.20.5 or 1.20.6 should update to 1.21 or later.
 
 The mod is client-side only. Servers cannot install a fix for their players. Each player must install it, or update to a version that ships a patched FreeType.
 

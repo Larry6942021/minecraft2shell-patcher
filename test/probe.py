@@ -1,28 +1,16 @@
-"""Checks, through the real FreeType library, whether a glyph's hinting
-program runs under the load flags Minecraft uses, with and without the
-flags the mod adds.
-
-A large jump in the top edge of the outline means the font's own bytecode
-ran. The mod adds MOD_FLAGS to every load, so the "with mod" column is what
-the game sees once the mod is installed.
-"""
-
 import ctypes
 import sys
 
 import freetype
 from freetype.raw import FT_Property_Set
 
-# Must match NO_BYTECODE in FreeTypeMixin: FT_LOAD_NO_HINTING | FT_LOAD_NO_AUTOHINT.
 MOD_FLAGS = 0x2 | 0x8000
 FT_LOAD_RENDER = 0x4
-FT_LOAD_METRICS_PROBE = 0x400000 | 0x8  # the value the glyph metrics probe uses
+FT_LOAD_METRICS_PROBE = 0x400000 | 0x8
 
-# Use the classic interpreter so a point move is visible. The exploit lives in
-# the interpreter either way; this only makes the demo measurable.
-_v = ctypes.c_int(35)
+interpreter_version = ctypes.c_int(35)
 FT_Property_Set(freetype.get_handle(), b"truetype", b"interpreter-version",
-                ctypes.byref(_v))
+                ctypes.byref(interpreter_version))
 
 
 def top_edge(path, flags):

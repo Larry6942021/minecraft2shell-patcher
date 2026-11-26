@@ -15,8 +15,11 @@
   "environment": "client",
   "depends": {
     "fabricloader": ">=0.15.10",
-    "minecraft": "${minecraft}",
+    "minecraft": ${minecraft},
     "java": ">=${java}"
+  },
+  "custom": {
+    "minecraft2shell-patcher:toasts": ${toasts}
   },
   "mixins": [
     {

@@ -11,6 +11,5 @@ pluginManagement {
 
 rootProject.name = 'minecraft2shell-patcher'
 
-// One subproject per supported Minecraft version. Each folder only holds a
-// gradle.properties file that names its toast source folder.
-file('versions').eachDir { include(":versions:${it.name}") }
+file('jars').eachDir { include(":jars:${it.name}") }
+file('toasts').eachDir { include(":toasts:${it.name}") }
